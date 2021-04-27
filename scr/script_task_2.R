@@ -1,5 +1,5 @@
 #==============================================================================#
-# Autores: David Acero Acero: 201228148 Andres Cembrano:201630829 Jorge Lozano: 201816744
+# Autores: David Acero Acero: 201228148
 # Colaboradores:
 # Fecha elaboracion: 25 de abril de 2021
 # Ultima modificacion: 25 de abril de 2021
@@ -26,4 +26,23 @@ df=rbindlist(lista_df,fill = TRUE) # 1.3. Crear un dataframe unico con los dataf
 df$tipo_delito=str_remove_all(df$tipo_delito,"[0123456789_]") %>% str_remove(.,"--primeraparte") %>% str_remove(.,"--segundaparte") %>% str_remove(.,"-$") %>% str_remove(.,"-$") %>% str_replace(.,"huto","hurto")# 1.2. Estandarizar la columna de tipo de delito, seguro se puede optimizar pero es trabajo honesto jaja
 
 # 2. Familia apply
+
+lapply(df, table) #Tabular cada variable de la base df
+
+# 3. Lapply
+
+minuscula=function(x){
+  if (is.character(x)==TRUE) {
+    y=tolower(x)
+    y
+  }else{
+    x
+  }
+} # 3.1. Funcion que transforma en minusculas un vector, si este es de caracteres, de lo contrario devuleve el mismo vector
+
+
+lapply(df,minuscula) # 3.2. Aplicar la funcion minuscula a todas las variables de df
+df_minusculas=rbindlist(lapply(df,minuscula),fill = TRUE) # ? preguntar como almacenar en un nuevo dataframe
+
+
 
