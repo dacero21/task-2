@@ -2,7 +2,7 @@
 # Autores: David Acero Acero: 201228148
 # Colaboradores:
 # Fecha elaboracion: 25 de abril de 2021
-# Ultima modificacion: 25 de abril de 2021
+# Ultima modificacion: 27 de abril de 2021
 # Version de R: 4.0.3
 #==============================================================================#
 
@@ -17,7 +17,7 @@ lista_df=readRDS("data/input/lista.rds") # 1.0. Cargar la base de datos.
 
 for (i in 1:length(lista_df)) {
   lista_df[[i]]=subset(lista_df[[i]],is.na(...2)==FALSE) #Eliminar las filas con Nas.
-  colnames(lista_df[[i]])=tolower(as.character(lista_df[[i]][1,])) #Renombrar las columnas con los nombres de la primera fila en minuscula.
+  colnames(lista_df[[i]])=tolower(as.character(lista_df[[i]][1,])) %>% chartr("áéíóú","aeiou",.) #Renombrar las columnas con los nombres de la primera fila en minuscula.
   lista_df[[i]]=lista_df[[i]][-1,] #Remover la primera fila que contenia los nombres de las columnas.
   lista_df[[i]]$tipo_delito=names(lista_df)[i] #Crear una variable que contenga el tipo de delito (sera limpiada mas adelante)
 } #Loop para puntos 1.1. y 1.2. 
@@ -40,9 +40,6 @@ minuscula=function(x){
   }
 } # 3.1. Funcion que transforma en minusculas un vector, si este es de caracteres, de lo contrario devuleve el mismo vector
 
+ # 3.2. Aplicar la funcion minuscula a todas las variables de df
 
-lapply(df,minuscula) # 3.2. Aplicar la funcion minuscula a todas las variables de df
-df_minusculas=rbindlist(lapply(df,minuscula),fill = TRUE) # ? preguntar como almacenar en un nuevo dataframe
-
-
-
+df_minuscula = lapply(df, function(x) minuscula(x)) %>% data.frame(stringsAsFactors = F) # Crear el data frame df_minuscula donde se aplique la funcion minuscula a todas las variables de df
